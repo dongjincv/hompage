@@ -1,5 +1,5 @@
 // CADSHIN website interactions
-if(location.pathname.endsWith('/index.html')){history.replaceState(history.state,'',`${location.pathname.slice(0,-'index.html'.length)}${location.search}${location.hash}`);}
+const pathname=location.pathname;const cleanPath=pathname.endsWith('/index.html')?pathname.slice(0,-'index.html'.length):pathname.endsWith('.html')?pathname.slice(0,-'.html'.length):pathname;if(cleanPath!==pathname)history.replaceState(history.state,'',`${cleanPath}${location.search}${location.hash}`);
 const toggle=document.querySelector('.menu-toggle');
 const nav=document.querySelector('.nav');
 if(toggle&&nav){toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'닫기':'메뉴'});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.textContent='메뉴'}));}
@@ -33,4 +33,4 @@ document.querySelectorAll('.portfolio-gallery-item').forEach(item=>{
  });
 });
 // Current-page navigation state
-const page=location.pathname.split('/').pop()||'index.html';const hash=location.hash;document.querySelectorAll('.nav a').forEach(a=>{const target=new URL(a.href);const targetPage=target.pathname.split('/').pop()||'index.html';if(targetPage===page&&(!target.hash||target.hash===hash))a.classList.add('active')});
+const page=(location.pathname.split('/').pop()||'index').replace(/\.html$/,'');const hash=location.hash;document.querySelectorAll('.nav a').forEach(a=>{const target=new URL(a.href);const targetPage=(target.pathname.split('/').pop()||'index').replace(/\.html$/,'');if(targetPage===page&&(!target.hash||target.hash===hash))a.classList.add('active')});
